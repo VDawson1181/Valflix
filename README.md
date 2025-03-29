@@ -1,4 +1,4 @@
-# React + Vite
+# Valflix built in React + Vite using the TMDB API
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
