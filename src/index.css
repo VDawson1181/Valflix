@@ -108,7 +108,7 @@
   .movie-card {
     @apply bg-dark-100 p-5 rounded-2xl shadow-inner shadow-light-100/10;
 
-    & img {
+    & > img {
       @apply rounded-lg h-auto w-full;
     }
 
@@ -163,7 +163,7 @@
   .modal{
     @apply mx-auto fixed inset-x-0 top-10 self-center m-4 p-4 w-lg h-lvh rounded-lg bg-dark-100 shadow-inner shadow-light-100/10 text-gray-100; 
 
-    & img {
+    & img.modalMainImg {
       @apply h-max w-max;
     }
 
