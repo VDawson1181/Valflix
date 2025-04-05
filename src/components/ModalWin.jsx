@@ -6,6 +6,7 @@ const ModalWin = ({id, title, overview, backdrop_path, openModal, closeModal}) =
 
     const [modalMovie, setModalMovie] = useState([]);
     const [modalBuyList, setModalBuyList] = useState([]);
+    const [modalRentList, setModalRentList] = useState([]);
 
     const loadMovieStreamingData = () => {
         const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
@@ -28,13 +29,17 @@ const ModalWin = ({id, title, overview, backdrop_path, openModal, closeModal}) =
             .then(data => {
                 if(data.results.US){
                     // console.log('No streaming data available');
-                    // console.log('Streaming data:', data.results.US);
+                    console.log('Streaming data:', data.results.US);
                     // console.log(data.results.US.buy)
 
                     setModalMovie(data.results.US||[]);
                     setModalBuyList(data.results.US.buy||[]);
+                    setModalRentList(data.results.US.flatrate||[]);
                 }else{
                     console.log('Non Streaming data:', data.results);
+                    setModalMovie([]);
+                    setModalBuyList([]);
+                    setModalRentList([]);
                 }
             })
             .catch(err => {                
@@ -61,7 +66,18 @@ const ModalWin = ({id, title, overview, backdrop_path, openModal, closeModal}) =
         <p className='modalDescrip'>{overview}</p>
         <hr />
         <h3><a href={modalMovie.link} target='_blank'>{title} -- TMDB Page</a></h3>
-        <h4>Available on these platforms:</h4>
+        <h4>Available to stream on these platforms:</h4>
+        <ul>
+        {
+            modalRentList.map((item, index) => (
+                <li key={index} className='modalBuy'>
+                    <img src={`https://image.tmdb.org/t/p/w500/${item.logo_path}`} alt={item.provider_name} width="50" height="50"/>
+                    <p>{item.provider_name}</p>
+                </li>
+            ))
+        }        
+        </ul>
+        {/* <h4>Available for purchase on these platforms:</h4>
         <ul>
         {
             modalBuyList.map((item, index) => (
@@ -71,7 +87,7 @@ const ModalWin = ({id, title, overview, backdrop_path, openModal, closeModal}) =
                 </li>
             ))
         }        
-        </ul>
+        </ul> */}
         
 
     </dialog>
