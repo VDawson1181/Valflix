@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-
+// import { getSavedMovies, updateSavedCount } from '../appwrite2';
 
 const ModalWin = ({id, title, overview, backdrop_path, openModal, closeModal}) => {
     const ref = useRef();
@@ -7,6 +7,7 @@ const ModalWin = ({id, title, overview, backdrop_path, openModal, closeModal}) =
     const [modalMovie, setModalMovie] = useState([]);
     const [modalBuyList, setModalBuyList] = useState([]);
     const [modalRentList, setModalRentList] = useState([]);
+    // const [savedMovies, setSavedMovies] = useState([]);
 
     const loadMovieStreamingData = () => {
         const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
@@ -17,7 +18,12 @@ const ModalWin = ({id, title, overview, backdrop_path, openModal, closeModal}) =
               Authorization: `Bearer ${API_KEY}`,
             }
           };
+
+          console.log(`MovieID: ${id} | MovieName: ${title} | PosterPath: https://image.tmdb.org/t/p/w500/${backdrop_path}`);
+        // search terms with Appwrite
+        // updateSavedCount(title, id, backdrop_path);
           
+        //Streaming data from TMDB...
           fetch(`https://api.themoviedb.org/3/movie/${id}/watch/providers`, options)
             .then(res => {
                 if(!res.ok) {
@@ -29,14 +35,14 @@ const ModalWin = ({id, title, overview, backdrop_path, openModal, closeModal}) =
             .then(data => {
                 if(data.results.US){
                     // console.log('No streaming data available');
-                    console.log('Streaming data:', data.results.US);
+                    // console.log('Streaming data:', data.results.US);
                     // console.log(data.results.US.buy)
 
                     setModalMovie(data.results.US||[]);
                     setModalBuyList(data.results.US.buy||[]);
                     setModalRentList(data.results.US.flatrate||[]);
                 }else{
-                    console.log('Non Streaming data:', data.results);
+                    // console.log('Non Streaming data:', data.results);
                     setModalMovie([]);
                     setModalBuyList([]);
                     setModalRentList([]);
@@ -51,17 +57,20 @@ const ModalWin = ({id, title, overview, backdrop_path, openModal, closeModal}) =
     useEffect(() => {
         if(openModal){
             loadMovieStreamingData();
-            ref.current.showModal();
+            ref.current.showModal();           
         }else{
             ref.current.close();
         }
     }, [openModal])
 
+    //   useEffect(() => {
+    //   }, []);
+
   return (
     <dialog ref={ref} id={id} onCancel={closeModal} className="modal">
         <button className='modal-close' onClick={closeModal}>Close</button>
         <h1>{title}</h1>
-        {/* <h2>#{id}</h2> */}
+        <h4>#{id}</h4>
         <img className='modalMainImg' src={backdrop_path ? `https://image.tmdb.org/t/p/w500/${backdrop_path}`:`/no-movie.png`} alt={title}/>
         <p className='modalDescrip'>{overview}</p>
         <hr />

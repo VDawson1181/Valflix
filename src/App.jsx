@@ -5,6 +5,7 @@ import MovieCard from './components/MovieCard';
 import Pagination from './components/Pagination';
 import { useDebounce } from 'react-use';
 import { getTrendingMovies, updateSearchCount } from './appwrite';
+// import { getSavedMovies, updateSavedCount } from './appwrite';
 
 
 const API_BASE_URL = "https://api.themoviedb.org/3"
@@ -26,6 +27,7 @@ const App = () => {
   const [movieTotalPages, setTotalMoviePages] = useState(500);
   const [isLoading, setIsLoading] = useState(false);
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
+  // const [savedMovies, setSavedMovies] = useState([]);
 
 
   // Debounce the search term to avoid too many API calls by waiting for the user to stop typing for 500ms
@@ -79,6 +81,7 @@ const App = () => {
     }
   }
 
+  // Get trending movies from Appwrite
   const loadTrendingMovies = async () => {
     try {
       const movies = await getTrendingMovies();
@@ -87,6 +90,16 @@ const App = () => {
       console.error(`Error fetching trending movies: ${error}`);
     }
   }
+
+    // Get saved movies from Appwrite
+    // const loadSavedMovies = async () => {
+    //   try {
+    //     const movies = await getSavedMovies();
+    //     setSavedMovies(movies);
+    //   } catch (error) {
+    //     console.error(`Error fetching saved movies: ${error}`);
+    //   }
+    // }
 
   // Pagination functions start
   const firstPage = () => {
@@ -123,6 +136,7 @@ const App = () => {
 
   useEffect(() => {
     loadTrendingMovies();
+    // loadSavedMovies();
   }, []);
 
   return (
